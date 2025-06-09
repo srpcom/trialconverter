@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SRPCOM CONVERTER v.5.1</title>
+    <title>SRPCOM CONVERTER v.5.2</title>
     <!-- Favicon -->
     <link rel="icon" href="https://github.com/srpcom/netlify/blob/main/logo%20kecil%20srpcom.png?raw=true" type="image/png">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -86,7 +86,7 @@
     <a href="https://t.me/srpcomadmin" target="_blank" rel="noopener noreferrer" class="block w-full">
         <div class="header-container">
             <img src="https://github.com/srpcom/netlify/blob/main/logo%20kecil%20srpcom.png?raw=true" alt="Logo SRPCOM" class="logo-img" onerror="this.onerror=null; this.src='https://placehold.co/75x25/f87171/ffffff?text=Logo&font=inter'; this.alt='Placeholder Logo SRPCOM';">
-            <h1 class="main-title-text">SRPCOM CONVERTER v.5.1</h1>
+            <h1 class="main-title-text">SRPCOM CONVERTER v.5.2</h1>
         </div>
     </a>
 
@@ -392,16 +392,43 @@
         
         function exportToTxt() {
             const yaml = yamlOutputElement.textContent;
-            if (!yaml || yaml.trim().length <= 8) { showMessage('Tidak ada YAML untuk diekspor.', 'info'); return; }
-            exportToFile(yaml, `srpcom_multi_${Date.now()}.txt`, 'text/plain;charset=utf-8');
+            if (!yaml || yaml.trim().length <= 8) { 
+                showMessage('Tidak ada YAML untuk diekspor.', 'info'); 
+                return; 
+            }
+            
+            const proxyNames = extractAllProxyNames(yaml);
+            const proxyCount = proxyNames.length;
+            const firstFullName = proxyNames[0];
+            const baseName = sanitizeFilename(firstFullName);
+            
+            let filename;
+            if (proxyCount === 1) {
+                filename = `${firstFullName}.txt`;
+            } else {
+                filename = `${baseName}_multi.txt`;
+            }
+            exportToFile(yaml, filename, 'text/plain;charset=utf-8');
         }
 
         function exportFullConfigToYaml() {
             const proxiesYaml = yamlOutputElement.textContent;
-            if (!proxiesYaml || proxiesYaml.trim().length <= 8) { showMessage('Tidak ada proxy untuk membuat config.', 'info'); return; }
+            if (!proxiesYaml || proxiesYaml.trim().length <= 8) { 
+                showMessage('Tidak ada proxy untuk membuat config.', 'info'); 
+                return; 
+            }
             const proxyNames = extractAllProxyNames(proxiesYaml);
-            const filename = `srpcom_full_${Date.now()}.yaml`;
+            const proxyCount = proxyNames.length;
+            const firstFullName = proxyNames[0];
+            const baseName = sanitizeFilename(firstFullName);
             
+            let filename;
+            if (proxyCount === 1) {
+                filename = `${firstFullName}_config.yaml`;
+            } else {
+                filename = `${baseName}_config.yaml`;
+            }
+
             let fullConfig = `port: 7890\nsocks-port: 7891\nredir-port: 7892\nmixed-port: 7893\ntproxy-port: 7895\nipv6: false\nmode: rule\nlog-level: silent\nallow-lan: true\nexternal-controller: 0.0.0.0:9090\nsecret: ''\nbind-address: '*'\nunified-delay: true\nprofile:\n  store-selected: true\ndns:\n  enable: true\n  ipv6: false\n  enhanced-mode: redir-host\n  listen: 0.0.0.0:7874\n  nameserver:\n  - 8.8.8.8\n  - 1.0.0.1\n  - https://dns.google/dns-query\n  fallback:\n  - 1.1.1.1\n  - 8.8.4.4\n  - https://cloudflare-dns.com/dns-query\n  - 112.215.203.254\n${proxiesYaml}\n`;
             
             let proxyGroups = `proxy-groups:\n- name: SRPCOM-GROUP\n  type: select\n  proxies:\n${proxyNames.map(n => `  - ${n}`).join('\n') || '  - DIRECT'}\n`;
