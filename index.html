@@ -45,7 +45,7 @@
         .message-box.error { background-color: #fee2e2; color: #991b1b; }
         .message-box.info { background-color: #dbeafe; color: #1e40af; }
 
-        .action-button, .toggle-button { position: relative; font-weight: 600; padding: 0.75rem 1.5rem; border-radius: 0.5rem; border: 2px solid transparent; border-bottom-width: 4px; transition: all 0.15s ease-in-out; }
+        .action-button, .toggle-button { position: relative; font-weight: 600; padding: 0.5rem; border-radius: 0.5rem; border: 2px solid transparent; border-bottom-width: 4px; transition: all 0.15s ease-in-out; text-align: center; font-size: 0.875rem; line-height: 1.25rem; }
         .action-button:hover:not(:disabled), .toggle-button:hover:not(:disabled) { transform: translateY(-2px); }
         .action-button:active:not(:disabled), .toggle-button:active:not(:disabled) { transform: translateY(1px); border-bottom-width: 2px; }
         .action-button:disabled, .toggle-button:disabled { background-color: #e5e7eb !important; border-color: #d1d5db !important; color: #9ca3af !important; cursor: not-allowed; opacity: 1; }
@@ -77,6 +77,7 @@
             .button-actions-group { flex-direction: column; gap: 0.75rem; } 
             .button-actions-group .action-button { width: 100%; } 
             #toggleButtonGrid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+            .toggle-button { padding: 0.5rem 0.25rem; font-size: 0.75rem; }
         }
         @media (max-width: 480px) { 
             .container { padding: 1.5rem; } 
@@ -114,14 +115,14 @@
             <div id="toggleButtonGrid" class="grid grid-cols-3 md:grid-cols-4 gap-4">
                 <button id="btnVidio" class="toggle-button">Vidio</button>
                 <button id="btnXcvip" class="toggle-button">XCVIP</button>
-                <button id="btnZoom" class="toggle-button">XCVIP WC</button>
+                <button id="btnZoom" class="toggle-button">xcvipwc</button>
                 <button id="btnVidioSni" class="toggle-button">vidioSNI</button>
                 <button id="btnAvaWc" class="toggle-button">avaWC</button>
                 <button id="btnFb" class="toggle-button">fb</button>
                 <button id="btnSpotify" class="toggle-button">spotify</button>
                 <button id="btnNetflix" class="toggle-button">netflix</button>
                 <button id="btnConvert" class="toggle-button">Tanpa bug</button>
-                <button id="btnAllBugs" class="toggle-button col-span-3 md:col-span-1">All Bug</button>
+                <button id="btnAllBugs" class="toggle-button col-span-3 md:col-span-4">All Bug</button>
             </div>
 
             <div>
